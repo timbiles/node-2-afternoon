@@ -5,7 +5,8 @@ const massive = require("massive");
 const port = 3000;
 
 const app = express();
-const controller = require('./controller/products_controller')
+const controller = require("./controller/products_controller");
+app.use(bodyParser());
 
 massive(process.env.CONNECTION_STRING)
   .then(db => {
@@ -15,17 +16,15 @@ massive(process.env.CONNECTION_STRING)
     console.log(err);
   });
 
-app.use(bodyParser());
+app.get("/api/products", controller.getAll);
 
-app.get('/api/products', controller.getAll);
+app.get("/api/product/:id", controller.getOne);
 
-app.get('/api/product/:id', controller.geOne);
+app.put("/api/product/:id", controller.update);
 
-app.put('/api/product/:id', controller.update);
+app.post("/api/product", controller.create);
 
-app.post('/api/product', controller.create);
-
-app.delete('/api/product/:id', controller.deleter);
+app.delete("/api/product/:id", controller.deleter);
 
 app.listen(port, () => {
   console.log(`Listening on Port: ${port}`);

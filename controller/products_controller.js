@@ -1,68 +1,73 @@
+const create = (req, res, next) => {
+  const db = req.app.get("db");
+  const { name, description, price, imageurl } = req.body;
 
-const create = (req,res,next)=>{
-    const db = req.app.get('db');
-    db.create_product()
-    .then(res=>{
-        res.status(200).send(res)
+  db.create_product([name, description, price, imageurl])
+    .then(response => {
+      res.status(200).send(response);
     })
-    .catch(err=>{
-        err.status(500).send(err);
-        console.log(err);
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
     });
 };
 
-const getOne = (req,res,next)=>{
-    const db = req.app.get('db');
-    db.read_product()
-    .then(res=>{
-        res.staus(200).send(res)
+const getOne = (req, res, next) => {
+  const db = req.app.get("db");
+  const { params } = req;
+  db.read_product(params.id)
+    .then(response => {
+      res.staus(200).send(response);
     })
-    .catch(err=>{
-        err.status(500).send(err);        
-        console.log(err)
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
     });
 };
 
-const getAll = (req,res,next)=>{
-    const db = req.app.get('db');
-    db.read._products()
-    .then(res=>{
-        res.status(200).send(res)
+const getAll = (req, res, next) => {
+  const db = req.app.get("db");
+  db.read_products()
+    .then(response => {
+      res.status(200).send(response);
     })
-    .catch(err=>{
-        err.status(500).send(err);        
-        console.log(err)
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
     });
 };
 
-const update = (req, res, next)=>{
-    const db = req.app.get('db');
-    db.update_product()
-    .then(res=>{
-        res.status(200).send(res)
+const update = (req, res, next) => {
+  const db = req.app.get("db");
+  const { params, query } = req;
+
+  db.update_product([params.id, query.desc])
+    .then(response => {
+      res.status(200).send(response);
     })
-    .catch(err=>{
-        err.status(500).send(err);        
-        console.log(err)
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
     });
 };
 
-const deleter = (req, res, next)=>{
-    const db = req.app.get();
-    db.delete_product()
-    .then(res=>{
-        res.status(200).send(res)
+const deleter = (req, res, next) => {
+  const db = req.app.get();
+  const { params } = req;
+  db.delete_product(params.id)
+    .then(response => {
+      res.status(200).send(response);
     })
-    .catch(err=>{
-        err.status(500).send(err);        
-        console.log(err)
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
     });
 };
 
 module.exports = {
-    create,
-    getOne,
-    getAll,
-    update,
-    deleter
-}
+  create,
+  getOne,
+  getAll,
+  update,
+  deleter
+};
